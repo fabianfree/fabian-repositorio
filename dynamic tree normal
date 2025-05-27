@@ -1,0 +1,87 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAXN = 200005;
+
+vector<int> tree[MAXN];
+int value[MAXN], subtree_sum[MAXN], parent[MAXN];
+int N, Q;
+
+// DFS para calcular suma de subárboles
+void dfs(int u, int p) {
+    parent[u] = p;
+    subtree_sum[u] = value[u];
+    for (int v : tree[u]) {
+        if (v != p) {
+            dfs(v, u);
+            subtree_sum[u] += subtree_sum[v];
+        }
+    }
+}
+
+// Actualiza los valores del subárbol con DFS
+void update_subtree(int u, int delta) {
+    subtree_sum[u] += delta;
+    for (int v : tree[u]) {
+        if (v != parent[u]) {
+            update_subtree(v, delta);
+        }
+    }
+}
+
+// Reconstruye el árbol desde un nodo raíz
+void rebuild(int root) {
+    dfs(root, -1);
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+    cin >> N >> Q;
+    for (int i = 0; i < N; ++i)
+        cin >> value[i];
+
+    for (int i = 0; i < N - 1; ++i) {
+        int u, v;
+        cin >> u >> v;
+        tree[u].push_back(v);
+        tree[v].push_back(u);
+    }
+
+    rebuild(0); // tomamos 0 como la raíz al principio
+
+    while (Q--) {
+        int type;
+        cin >> type;
+
+        if (type == 0) {
+            int u, w, z;
+            cin >> u >> w >> z;
+
+            // Eliminar arista u-w
+            tree[u].erase(remove(tree[u].begin(), tree[u].end(), w), tree[u].end());
+            tree[w].erase(remove(tree[w].begin(), tree[w].end(), u), tree[w].end());
+
+            // Agregar nueva arista u-z
+            tree[u].push_back(z);
+            tree[z].push_back(u);
+
+            // Reconstruir árbol desde la raíz
+            rebuild(0);
+
+        } else if (type == 1) {
+            int p, x;
+            cin >> p >> x;
+            value[p] += x;
+            update_subtree(p, x);
+
+        } else if (type == 2) {
+            int v;
+            cin >> v;
+            cout << subtree_sum[v] << '\n';
+        }
+    }
+
+    return 0;
+}
