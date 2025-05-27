@@ -1,0 +1,64 @@
+ORDENAMIENTOS
+
+Quick Sort
+
+Este algoritmo es como dividir y conquistar. Imagina que tienes un montón de números desordenados y quieres ordenarlos. Lo que hace Quick Sort es elegir un número especial, llamado pivote, y luego separa los números en dos grupos: los que son menores o iguales al pivote y los que son mayores. Después, hace lo mismo con cada grupo hasta que todo esté ordenado.
+
+def quicksort(arr):
+
+# Si el array tiene 0 o 1 elemento, ya está ordenado
+    if len(arr) <= 1:
+        return arr
+    # Elegimos el pivote (en este caso, el último elemento)
+    pivot = arr[-1]
+    # Creamos dos listas: una con los números menores o iguales al pivote
+    # y otra con los mayores
+    left = [x for x in arr[:-1] if x <= pivot]
+    right = [x for x in arr[:-1] if x > pivot]
+    # Aplicamos Quick Sort a las dos listas y las unimos con el pivote en medio
+    return quicksort(left) + [pivot] + quicksort(right)
+# Ejemplo de uso
+arr = [3, 6, 8, 10, 1, 2, 1]
+sorted_arr = quicksort(arr)
+print("Quick Sort:", sorted_arr)
+
+¿Cómo funciona?
+*Si el array tiene 0 o 1 elemento, ya está ordenado, así que lo devolvemos tal cual.
+*Elegimos un pivote (en este caso, el último número del array).
+*Separamos los números en dos grupos: left (números menores o iguales al pivote) y right (números mayores al pivote).
+*Aplicamos Quick Sort a left y right (esto se hace recursivamente, o sea, se llama a la misma función).
+*Finalmente, unimos todo: left + pivote + right.
+
+Insertion Sort 
+Este algoritmo es como cuando ordenas cartas en tu mano. Vas tomando una carta a la vez y la colocas en la posición correcta dentro de las cartas que ya tienes ordenadas. Así, poco a poco, todo queda en orden.
+def insertion_sort(arr):
+    # Empezamos desde el segundo elemento (índice 1)
+    for i in range(1, len(arr)):
+        key = arr[i]  # Este es el número que vamos a insertar
+        j = i - 1     # Empezamos a comparar con el número anterior
+        # Movemos los números mayores que key una posición adelante
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j -= 1
+        # Insertamos key en la posición correcta
+        arr[j + 1] = key
+    return arr
+# Ejemplo de uso
+arr = [3, 6, 8, 10, 1, 2, 1]
+sorted_arr = insertion_sort(arr)
+print("Insertion Sort:", sorted_arr)
+¿Cómo funciona?
+*Empezamos desde el segundo número del array (porque el primero ya está "ordenado" por defecto).
+*Tomamos el número actual (key) y lo comparamos con los números a su izquierda (que ya están ordenados).
+*Si encontramos un número mayor que key, lo movemos una posición a la derecha.
+*Repetimos esto hasta encontrar la posición correcta para key.
+*Insertamos key en esa posición.
+*Repetimos el proceso para todos los números del array.
+
+Si ejecutas ambos códigos,tendrás esto:
+Quick Sort: [1, 1, 2, 3, 6, 8, 10]
+Insertion Sort: [1, 1, 2, 3, 6, 8, 10]
+Ambos algoritmos ordenan el array correctamente, pero cada uno lo hace de una manera diferente. Quick Sort es más rápido para arrays grandes, mientras que Insertion Sort es más simple y funciona bien para arrays pequeños o casi ordenados.
+
+Profesor perdón por no entregarlo en equipo esque no conozco a nadie y pregunte en teams y en el grupo del salón y no pude conseguir equipo
+
